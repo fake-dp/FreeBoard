@@ -101,11 +101,12 @@ export const TextareaStyled = styled.textarea`
 
 export const ButtonStyled = styled.button`
   width: 100%;
-  height: 2rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 1.5rem;
+  padding: 1rem;
   margin-top: 20px;
+  background-color: ${(props) => (props.activeBtn ? "#ffd600" : "")};
+  cursor: pointer;
   &:focus {
     outline: none;
     border: 1px solid #000;

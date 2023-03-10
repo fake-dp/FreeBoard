@@ -17,12 +17,25 @@ const BoardWrite = () => {
   const [passwordError, setPasswordError] = useState("");
   const [titleError, setTitleError] = useState("");
   const [contentsError, setContentsError] = useState("");
+
+  const [activeBtn, setActiveBtn] = useState(false);
+
   const [createBoard] = useMutation(CREATE_BOARD);
 
   const onChangeTitle = (event) => {
     setTitle(event.target.value);
     if (event.target.value !== "") {
       setTitleError("");
+    }
+    if (
+      event.target.value !== "" &&
+      contents !== "" &&
+      writer !== "" &&
+      password !== ""
+    ) {
+      setActiveBtn(true);
+    } else {
+      setActiveBtn(false);
     }
   };
 
@@ -31,6 +44,16 @@ const BoardWrite = () => {
     if (event.target.value !== "") {
       setContentsError("");
     }
+    if (
+      event.target.value !== "" &&
+      title !== "" &&
+      writer !== "" &&
+      password !== ""
+    ) {
+      setActiveBtn(true);
+    } else {
+      setActiveBtn(false);
+    }
   };
 
   const onChangeWriter = (event) => {
@@ -38,12 +61,32 @@ const BoardWrite = () => {
     if (event.target.value !== "") {
       setWriterError("");
     }
+    if (
+      event.target.value !== "" &&
+      title !== "" &&
+      contents !== "" &&
+      password !== ""
+    ) {
+      setActiveBtn(true);
+    } else {
+      setActiveBtn(false);
+    }
   };
 
   const onChangePassword = (event) => {
     setPassword(event.target.value);
     if (event.target.value !== "") {
       setPasswordError("");
+    }
+    if (
+      event.target.value !== "" &&
+      title !== "" &&
+      contents !== "" &&
+      writer !== ""
+    ) {
+      setActiveBtn(true);
+    } else {
+      setActiveBtn(false);
     }
   };
 
@@ -92,6 +135,7 @@ const BoardWrite = () => {
       passwordError={passwordError}
       titleError={titleError}
       contentsError={contentsError}
+      activeBtn={activeBtn}
     />
   );
 };

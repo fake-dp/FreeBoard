@@ -11,6 +11,7 @@ const BoardWriteUi = ({
   titleError,
   contentsError,
   onChangeContent,
+  activeBtn,
 }) => {
   return (
     <S.StyledDiv>
@@ -51,7 +52,9 @@ const BoardWriteUi = ({
                 {contentsError}
               </div>
             }
-            <S.ButtonStyled type="submit">등록</S.ButtonStyled>
+            <S.ButtonStyled activeBtn={activeBtn} type="submit">
+              등록
+            </S.ButtonStyled>
           </S.TextareaWrapper>
         </S.TitleWrapper>
       </S.StyledForm>
