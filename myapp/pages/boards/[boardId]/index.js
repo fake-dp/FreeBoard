@@ -1,11 +1,8 @@
+import BoardDetail from "/src/components/units/board/detail/BoardDetail.container";
 import React from "react";
 
-const BoardDetail = () => {
-  return (
-    <div>
-      <div>게시물 상세 페이지</div>
-    </div>
-  );
+const BoardDetailPage = () => {
+  return <BoardDetail />;
 };
 
-export default BoardDetail;
+export default BoardDetailPage;

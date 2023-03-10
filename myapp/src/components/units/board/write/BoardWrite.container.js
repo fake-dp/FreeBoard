@@ -3,7 +3,7 @@ import BoardWriteUi from "./BoardWrite.presenter";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
-import { CREATE_BOARD } from "./BoardWrite.queris";
+import { CREATE_BOARD } from "./BoardWrite.queries";
 
 const BoardWrite = () => {
   const router = useRouter();

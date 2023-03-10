@@ -20,7 +20,7 @@ yarn add @material-ui/core
 yarn add axios
 ```
 
---
+---
 
 ## 아폴로 기본 셋팅
 
