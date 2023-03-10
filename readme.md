@@ -19,3 +19,26 @@ yarn add antd
 yarn add @material-ui/core
 yarn add axios
 ```
+
+--
+
+## 아폴로 기본 셋팅
+
+```js
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+
+function MyApp({ Component, pageProps }) {
+  const client = new ApolloClient({
+    uri: "http://backendonline.codebootcamp.co.kr/graphql",
+    cache: new InMemoryCache(),
+  });
+
+  return (
+    <ApolloProvider client={client}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  );
+}
+
+export default MyApp;
+```

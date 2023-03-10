@@ -1,151 +1,125 @@
-import React from "react";
-import styled from "@emotion/styled";
+import React, { useState } from "react";
+import * as S from "../../../styles/emotion";
+
+import { gql } from "@apollo/client";
+import { useRouter } from "next/router";
+import { useMutation } from "@apollo/client";
+export const CREATE_BOARD = gql`
+  mutation createBoard($createBoardInput: CreateBoardInput!) {
+    createBoard(createBoardInput: $createBoardInput) {
+      _id
+    }
+  }
+`;
 
 const BoardWrite = () => {
-  return (
-    // 게시판 html
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
+  const [writer, setWriter] = useState("");
+  const [password, setPassword] = useState("");
 
-    <StyledDiv>
+  const [writerError, setWriterError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [titleError, setTitleError] = useState("");
+  const [contentsError, setContentsError] = useState("");
+  const [createBoard] = useMutation(CREATE_BOARD);
+
+  const onChangeTitle = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const onChangeContent = (event) => {
+    setContents(event.target.value);
+  };
+
+  const onChangeWriter = (event) => {
+    setWriter(event.target.value);
+  };
+
+  const onChangePassword = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const onClickSubmit = async (e) => {
+    e.preventDefault();
+    if (!writer) {
+      setWriterError("작성자를 입력해주세요.");
+    }
+    if (!password) {
+      setPasswordError("비밀번호를 입력해주세요.");
+    }
+    if (!title) {
+      setTitleError("제목을 입력해주세요.");
+    }
+    if (!contents) {
+      setContentsError("내용을 입력해주세요.");
+    }
+
+    try {
+      if (writer && password && title && contents) {
+        const result = await createBoard({
+          variables: {
+            createBoardInput: {
+              writer: writer,
+              password: password,
+              title: title,
+              contents: contents,
+            },
+          },
+        });
+        alert("게시물이 등록되었습니다.");
+        router.push(`/boards/${result.data.createBoard._id}`);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  return (
+    <S.StyledDiv>
       <h1>게시물 등록</h1>
-      <StyledForm>
-        <InputWrapper>
+      <S.StyledForm onSubmit={onClickSubmit}>
+        <S.InputWrapper>
           <div>
             <label>작성자</label>
-            <StyledInput type="text" />
+            <S.StyledInput onChange={onChangeWriter} type="text" />
+            {
+              <div style={{ color: "red", fontSize: "12px" }}>
+                {writerError}
+              </div>
+            }
           </div>
           <div>
             <label>비밀번호</label>
-            <StyledInput type="password" />
+            <S.StyledInput type="password" onChange={onChangePassword} />
+            {
+              <div style={{ color: "red", fontSize: "12px" }}>
+                {passwordError}
+              </div>
+            }
           </div>
-        </InputWrapper>
+        </S.InputWrapper>
 
-        <TitleWrapper>
+        <S.TitleWrapper>
           <div>
             <label>제목</label>
-            <TitleInput type="text" />
+            <S.TitleInput type="text" onChange={onChangeTitle} />
+            {<div style={{ color: "red", fontSize: "12px" }}>{titleError}</div>}
           </div>
-          <TextareaWrapper>
+          <S.TextareaWrapper>
             <label>내용</label>
-            <TextareaStyled></TextareaStyled>
-            <ButtonStyled>등록</ButtonStyled>
-          </TextareaWrapper>
-        </TitleWrapper>
-      </StyledForm>
-    </StyledDiv>
+            <S.TextareaStyled onChange={onChangeContent}></S.TextareaStyled>
+            {
+              <div style={{ color: "red", fontSize: "12px" }}>
+                {contentsError}
+              </div>
+            }
+            <S.ButtonStyled type="submit">등록</S.ButtonStyled>
+          </S.TextareaWrapper>
+        </S.TitleWrapper>
+      </S.StyledForm>
+    </S.StyledDiv>
   );
 };
 
 export default BoardWrite;
-
-const StyledDiv = styled.div`
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-  margin: 0 auto;
-  margin-top: 5rem;
-  width: 800px;
-  height: 900px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
-  &:hover {
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  height: 100%;
-`;
-
-const InputWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  width: 100%;
-  align-items: center;
-
-  margin-bottom: 1rem;
-`;
-
-const TitleWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 1rem;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  height: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 1.5rem;
-  box-sizing: border-box;
-  &:focus {
-    outline: none;
-    border: 1px solid #000;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const TitleInput = styled.input`
-  width: 100%;
-  height: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 1.5rem;
-  box-sizing: border-box;
-  &:focus {
-    outline: none;
-    border: 1px solid #000;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const TextareaWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 1rem;
-  margin-top: 20px;
-`;
-
-const TextareaStyled = styled.textarea`
-  width: 100%;
-  height: 20rem;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 1rem;
-  &:focus {
-    outline: none;
-    border: 1px solid #000;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const ButtonStyled = styled.button`
-  width: 100%;
-  height: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 1.5rem;
-  margin-top: 20px;
-  &:focus {
-    outline: none;
-    border: 1px solid #000;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  }
-`;
